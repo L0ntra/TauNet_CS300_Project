@@ -62,7 +62,11 @@ def main():
   c2 = a.encode()
   b = encrypt(c, 10, 'asdfg')
   b2 = encrypt(c2, 10, 'asdfg')
-  d = decrypt(b, 10, 'asdfg')
+  b3 = ''
+  for i in range(len(b2)):
+    b3 = b3 + chr(b2[i])
+  b4 = [ord(b3[i]) for i in range(len(b3))]
+  d = decrypt(b4, 10, 'asdfg')
   e = ''
   for i in range(0, len(d)):
     e = e + chr(d[i])
@@ -94,4 +98,6 @@ def main():
   print("Test encoding properties: ")
   print('ord() is equiv to .encode() for encrypt? ', (b == b2))
   print("Test Encryption == source Encryption: ", m == b)
-main()
+
+if __name__ == "__main__":
+  main()

@@ -75,17 +75,17 @@ def valid_ip(ip):
   return False
 
 def main():
-#  print(valid_ip('128.0.0.1'))       #true
-#  print(valid_ip('1.1.1.256'))       #false
-#  print(valid_ip('1.1.1.-1'))        #false
-#  print(valid_ip('256.1.1.255'))     #false
-#  print(valid_ip('-1.1.1.1'))        #false
-#  print(valid_ip('255.255.255.255')) #true
-#  print(valid_ip('1.1.1.1'))         #true
-#  print(valid_ip('1.1.1.1.1'))       #false
-#  print(valid_ip('1.1.1'))           #false
-#  print(valid_ip('128'))             #false
-#  print(valid_ip('1234567890'))      #false
+  print(valid_ip('128.0.0.1'))       #true
+  print(valid_ip('1.1.1.256'))       #false
+  print(valid_ip('1.1.1.-1'))        #false
+  print(valid_ip('256.1.1.255'))     #false
+  print(valid_ip('-1.1.1.1'))        #false
+  print(valid_ip('255.255.255.255')) #true
+  print(valid_ip('1.1.1.1'))         #true
+  print(valid_ip('1.1.1.1.1'))       #false
+  print(valid_ip('1.1.1'))           #false
+  print(valid_ip('128'))             #false
+  print(valid_ip('1234567890'))      #false
 
   print(valid_user('aAzZ01-'))        #true   - All chars in range
   print(valid_user('aaa!'))           #false  - one char not in range

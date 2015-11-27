@@ -12,7 +12,14 @@
 def read_message(message, version):
   if version == '0.1':
     return read_message_0_1(message)
+  if version == '0.2':
+    return read_message_0_2(message)
   return None
+
+#Protocol v0.2
+def read_message_0_2(message):
+  return None
+
 
 #Protocol v0.1
 def read_message_0_1(message):
@@ -53,13 +60,15 @@ def read_message_0_1(message):
   recieved_message = message[j+2:length]
 
   return (user_info, my_info, recieved_message, version)
+
+
 # <<<< <<<< <<<< WRITE MESSAGE FUNCTIONS >>>> >>>> >>>> #
 
 #This is the wrapper function for writing messages
 def write_message(user_info, my_info, message, version):
   if version == '0.1':
     return write_message_0_1(user_info, my_info, message, version)
-  return
+  return None
 
   #protocol v0.1
 def write_message_0_1(user_info, my_info, message, version):

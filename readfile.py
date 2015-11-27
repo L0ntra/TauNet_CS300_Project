@@ -70,6 +70,19 @@ class u_list:
   def print_users(self):
     return self.user_list.print_node()
 
+  #Adds a user to the list of users
+  #user_info == (user_name, user_ip)
+  def add_user(self, user_info):
+    if(!self.search_users(user_info[0])): ## make sure the user name isn't already taken
+      self.user_list = self.user_list.add_node(user_info[0], user_info[1])
+    return None
+
+  #Removes a user from the list of user
+  #user_info == (user_name, user_ip)
+  def remove_ser(self, user_info):
+    self.user_list = self.user_list.remove_node(user_info[0], user_info[1])
+    return None
+
 def main():
   filename = "users"
   users = u_list(filename)
