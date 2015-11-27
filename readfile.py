@@ -12,6 +12,13 @@ class user_node:
     new_node.next_node = self
     return new_node
 
+  def remove_node(self, u_name):
+    if self.user_name == u_name:
+      return self.next_node
+    if self.next_node:
+      self.next_node = self.next_node.remove_node(u_name)
+    return self
+
   #prints all users and their ip addrsses
   def print_node(self):
     print(self.user_name + ' (' + self.ip + ') ', end='')
@@ -52,35 +59,41 @@ class u_list:
     user_ip = f.readline().strip('\n')
     if not user_name or not user_ip: #End Of File
       return None
-    user_list = user_node(user_name, user_ip)
+    user_list = user_node(user_name, user_ip) 
     user_list.next_node = self.read_file(f)
     return user_list
 
   #Seach the userlist for a user name and return (user_name, IP)
   #if found or None if not found
   def search_users(self, user_name):
-    return self.user_list.search_user(user_name)
+    if self.user_list:
+      return self.user_list.search_user(user_name)
+    return None
 
   #Search the userlist for an IP address and return (user name, IP)
   #if found or None if not found
   def search_ip(self, user_ip):
-    return self.user_list.search_ip(user_ip)
+    if self.user_list:
+      return self.user_list.search_ip(user_ip)
+    return None
   
   #prints all usernames and their ip addresses
   def print_users(self):
-    return self.user_list.print_node()
+    if self.user_list:
+      return self.user_list.print_node()
+    return None
 
   #Adds a user to the list of users
   #user_info == (user_name, user_ip)
   def add_user(self, user_info):
-    if(!self.search_users(user_info[0])): ## make sure the user name isn't already taken
+    if(not self.search_users(user_info[0])): ## make sure the user name isn't already taken
       self.user_list = self.user_list.add_node(user_info[0], user_info[1])
     return None
 
   #Removes a user from the list of user
-  #user_info == (user_name, user_ip)
-  def remove_ser(self, user_info):
-    self.user_list = self.user_list.remove_node(user_info[0], user_info[1])
+  def remove_user(self, user_name):
+    if(self.user_list):
+      self.user_list = self.user_list.remove_node(user_name)
     return None
 
 def main():

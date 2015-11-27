@@ -151,8 +151,8 @@ def main():
     elif command[0] == '+': 
       split_command = read_command(command)
       user_list.add_user(split_command)
-#   elif command[0] == '-':
-      #remove_user( user )
+    elif command[0] == '-':
+      user_list.remove_user(command[1:])
     elif command[0:5] == '!EXIT':
       return
     else:
