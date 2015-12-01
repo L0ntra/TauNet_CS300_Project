@@ -29,36 +29,30 @@ def read_message_0_1(message):
   j = 0
   user_info = (None, None)
   my_info = (None, None)
-  #  version: 0.1    
-  while message[i] != ':' and i < length:
-    i = i +1
-  i = i + 2
+  #  version: 0.1 
+  i = 12
   j = i
-  while message[j] != '\n' and j <length:
+  while message[j] != '\r' and j <length:
     j = j +1
   version = message[i:j]
 
-  #  from: their_name
-  while message[i] != ':' and i < length:
-    i = i +1
-  i = i + 2
+#  from: their_name
+  i = j + 8 # len('\nfrom: ')
   j = i
-  while message[j] != '\n' and j <length:
+  while message[j] != '\r' and j <length:
     j = j +1
   user_info = (message[i:j], None)
 
   #  to: my_name
-  while message[i] != ':' and i < length:
-    i = i +1
-  i = i + 2
+  i = j + 6
   j = i
-  while message[j] != '\n' and j <length:
+  while message[j] != '\r' and j <length:
     j = j +1
   my_info = (message[i:j], None)
 
   #  message
-  recieved_message = message[j+2:length]
-
+  recieved_message = message[j+4:]
+#  print(user_info, my_info, recieved_message, version)
   return (user_info, my_info, recieved_message, version)
 
 
@@ -77,19 +71,25 @@ def write_message_0_1(user_info, my_info, message, version):
   #  to: your_name
   #
   #  message
-  return "version: " + version + "\nfrom: " + my_info[0] + "\nto: "+ user_info[0] + "\n\n" + message
+  return "version: " + version + "\r\nfrom: " + my_info[0] + "\r\nto: "+ user_info[0] + "\r\n\r\n" + message
 
 
 
 def main():
-  message = write_message(('user1', '127.0.0.1'), ('ME!', '127.0.0.1'), "Why hello there!", '0.1')
-  print(message)
-  part_mess = read_message(''+message, '0.1')
-  print('\n\nread_message()\nuser_info = ', end = ''); print(part_mess[0])
-  print('my_info = ', end = ''); print(part_mess[1])
-  print('message = ', end = ''); print(part_mess[2])
-  print('version = ', end = ''); print(part_mess[3])
+  
+  print('-----')
+  print(ord('\n'))
+  print("10" + chr(10)) 
+  print('-----')
+  print(ord('\r'))
+  print("13" + chr(13))
+  print('-----')
+
+
   return
+
+
+
 
 
 

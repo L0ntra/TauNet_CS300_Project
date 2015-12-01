@@ -8,7 +8,7 @@ import socket, threading, time, os
 
 # my libraries
 from readfile import u_list
-import protocol, saber
+import protocol, saber, messages
 
 port = 6283
 message = ''
@@ -57,7 +57,7 @@ def send_message(user_info, message, key):
   return
 
 # Listens for incoming messages
-def listen(key):
+def listen(user_list, message_hist):
   s = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
   s.bind(('', 6283))
   while 1:
@@ -68,15 +68,19 @@ def listen(key):
     #convert to list
     mess_list = [ord(mess[i]) for i in range(len(mess))]
     # decrypt
-    dec_mess = saber.decrypt(mess_list, 20, key)
+    dec_mess = saber.decrypt(mess_list, 20, user_list.key)
     # convert to string
     message = ''
     for i in range(len(dec_mess)):
       message = message + chr(dec_mess[i])
       
     rec_mess = protocol.read_message(message, '0.1') #piece out message
-
-    print('\n' + rec_mess[2] + '\n' + input_message, end = "")
+    if(user_list.search_users(rec_mess[0][0])):
+      print('\n' + rec_mess[0][0] + ':\t' + rec_mess[2] + '\n' + input_message, end = '')
+      message_hist.add_message(rec_mess[0][0], rec_mess[1][0], rec_mess[2])
+    else:
+      #Send error message
+      print('\n<<Message recieved from unknon user and discarded>>\n' + input_message, end = '')
   return
 
 
@@ -104,10 +108,11 @@ def main():
   if filename == '!EXIT':
     return
   user_list = u_list(filename)
+  message_hist = messages.message_list()
   user_info = None
 
 
-  listen_thread = threading.Thread(target=listen, args = (user_list.key,))
+  listen_thread = threading.Thread(target=listen, args = (user_list, message_hist,))
   listen_thread.daemon = True
   listen_thread.start()
 
@@ -126,7 +131,9 @@ def main():
   while 1:
     split_command = None
     command = input(input_message)
-    if command[0] == '@':
+    if command == '':
+      print()
+    elif command[0] == '@':
       #print("Message") #Try and send a message to user
       split_command = read_command(command)
       if(split_command[0] != ''):
@@ -138,6 +145,17 @@ def main():
       else:
         user_info = old_user
         print("Invalid Command. ? for help\n") ##Invalid user_name
+    elif command[0] == '+': 
+      split_command = read_command(command)
+      user_list.add_user(split_command)
+    elif command[0] == '-':
+      user_list.remove_user(command[1:])
+    elif command[0] == '#':
+      lines = int(command[1:])
+      if lines > 0 and lines < 21:
+        message_hist.print_n(lines)
+      else:
+        print("Error (#n): n must be a whole digit number from 1 to 20")
     elif command[0] == '?':
       print("  Command               | Description")
       print("  ----------------------+-------------------------------------------------------")
@@ -146,13 +164,9 @@ def main():
       print("  @ Message             | Sends 'Message' to the last 'user_name' messaged")
       print("  +user_name ip_address | Adds 'user_name' to the list of users at 'ip_address.'")
       print("  -user_name            | Remove 'user_name' from the list of users.")
+#     print("  #n                    | Displays the last 'n' messages from 1 to 20
       print("  !EXIT                 | Exit the program")
       print("  ----------------------+-------------------------------------------------------")
-    elif command[0] == '+': 
-      split_command = read_command(command)
-      user_list.add_user(split_command)
-    elif command[0] == '-':
-      user_list.remove_user(command[1:])
     elif command[0:5] == '!EXIT':
       return
     else:
