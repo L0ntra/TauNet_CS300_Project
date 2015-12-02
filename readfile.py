@@ -56,6 +56,7 @@ class u_list:
       self.key = None
       self.me = None
       self.user_list = None
+    self.filename = filename
     return
 
   def input_u_list(self, filename = None):
@@ -92,12 +93,13 @@ class u_list:
           break
       if not (input("Enter another user? (y/n): ") == 'y'):
         break
-    self.write_file(filename)
+    self.filename = filename
+    self.write_file()
     return
 
-  def write_file(self, filename):
-    assert filename
-    f = open(filename, 'w')
+  def write_file(self):
+    assert self.filename
+    f = open(self.filename, 'w')
     assert f
     f.write(self.key + '\n')
     f.write(self.me + '\n')
@@ -142,15 +144,17 @@ class u_list:
   #Adds a user to the list of users
   #user_info == (user_name, user_ip)
   def add_user(self, user_info):
-    if(not self.search_users(user_info[0])): ## make sure the user name isn't already taken
+    if not self.search_users(user_info[0]): ## make sure the user name isn't already taken
       self.user_list = self.user_list.add_node(user_info[0], user_info[1])
-    return None
+      return True
+    return False
 
   #Removes a user from the list of user
   def remove_user(self, user_name):
-    if(self.user_list):
+    if(self.user_list and self.search_users(user_name)):
       self.user_list = self.user_list.remove_node(user_name)
-    return None
+      return True
+    return False
 
 def main():
   filename = "users"

@@ -160,26 +160,35 @@ def main():
         print("Invalid Command. ? for help\n") ##Invalid user_name
     elif command[0] == '+': 
       split_command = read_command(command)
-      user_list.add_user(split_command)
+      if not(split_command[0] == '' or split_command[1] == ''):
+        if user_list.add_user(split_command):
+          user_list.write_file()
     elif command[0] == '-':
-      user_list.remove_user(command[1:])
+      if user_list.remove_user(command[1:]):
+        user_list.write_file()
     elif command[0] == '#':
       lines = int(command[1:])
       if lines > 0 and lines < 21:
         message_hist.print_n(lines)
       else:
         print("Error (#n): n must be a whole digit number from 1 to 20")
+    elif command[0] == '~':
+      user_list.print_users()
+      print()
     elif command[0] == '?':
-      print("  Command               | Description")
-      print("  ----------------------+-------------------------------------------------------")
-      print("  ?                     | Displays this dialogue")
-      print("  @user_name Message    | Sends 'user_name' 'Message'")
-      print("  @ Message             | Sends 'Message' to the last 'user_name' messaged")
-      print("  +user_name ip_address | Adds 'user_name' to the list of users at 'ip_address.'")
-      print("  -user_name            | Remove 'user_name' from the list of users.")
-#     print("  #n                    | Displays the last 'n' messages from 1 to 20
-      print("  !EXIT                 | Exit the program")
-      print("  ----------------------+-------------------------------------------------------")
+      print(" Command               | Description")
+      print(" ----------------------+-------------------------------------------------------")
+      print(" ?                     | Displays this dialogue")
+      print(" @user_name Message    | Sends 'user_name' 'Message'")
+      print(" @ Message             | Sends 'Message' to the last 'user_name' messaged")
+      print(" +user_name ip_address | Adds 'user_name' to the list of users at 'ip_address.'")
+      print(" -user_name            | Remove 'user_name' from the list of users.")
+      print(" #n                    | Displays the last 'n' messages from 1 to 20")
+#      print(" #user_name n          | Displays the last 'n' messages (to and) from user_name")
+      print(" ~                     | Displays all networked users and their address")
+#      print(" ~user_name            | Displays user_name's information")
+      print(" !EXIT                 | Exit the program")
+      print(" ----------------------+-------------------------------------------------------")
     elif command[0:5] == '!EXIT':
       return
     else:
