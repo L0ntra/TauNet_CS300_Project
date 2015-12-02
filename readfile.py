@@ -1,6 +1,6 @@
 ##LLL for the users
 class user_node:
-  def __init__(self, u_name, u_ip):
+  def __init__(self, u_name = None, u_ip = None, next_node = None):
     self.next_node =  None
     self.user_name = u_name
     self.ip = u_ip
@@ -45,12 +45,55 @@ class user_node:
 
 class u_list:
   #User list must be initialized with a filename.
-  def __init__(self, filename):
-    f = open(filename)
-    self.key = f.readline().strip('\n') # Read in Key
-    self.me = f.readline().strip('\n')  # Read in my user name
-    self.user_list = self.read_file(f)
-    f.close()
+  def __init__(self, filename = None):
+    if filename:
+      f = open(filename)
+      self.key = f.readline().strip('\n') # Read in Key
+      self.me = f.readline().strip('\n')  # Read in my user name
+      self.user_list = self.read_file(f)
+      f.close()
+    else:
+      self.key = None
+      self.me = None
+      self.user_list = None
+    return
+
+  def input_u_list(self, filename = None):
+    if not filename:
+      while True:
+        filename = input("Input file name to create: ")
+        try:
+          open(filename)
+        except IOError:
+          break
+        else:
+          if input("WARNING: File alredy exists. Overwrite? (y/n): ") == 'y':
+            break
+    while True:
+      self.key = input("Input TauNet ket: ")
+      if input("Key = " + self.key + "\nIs this correct? (y/n): ") == 'y':
+        break
+    while True:
+      self.me = input("Input your user name: ")
+      if input("user name = " + self.me + "\nIs this correct? (y/n): ") == 'y':
+        break
+    print("Creating the list of other users on your TauNetwork:")
+    while True:
+      while True:
+        user = input("Input user name: ")
+        ip = input("Input " + user + "'s IP address: ")
+        print("Username = " + user + " IP = " + ip)
+        if input("Is this correct? (y/n): ") == 'y':
+          if self.user_list:
+            if self.add_user((user, ip)):
+              print(user + " has already been added to the user list.")
+            else:
+          else:
+            self.user_list = user_node(user, ip, self.user_list)
+          break
+      if not (input("Enter another user? (y/n): ") == 'y'):
+        break
+    ##Write file
     return
 
   #Reads in the users from the file

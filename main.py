@@ -16,7 +16,6 @@ user = ''
 myip = socket.gethostbyname(socket.gethostname())
 protocol_version = '0.1'
 input_message = "TauNet v" + protocol_version + ">> " #Global variable
-my_info = ('Lontra', '128.0.0.1')
 
 
 # breaks a command in to it's pieces
@@ -35,7 +34,7 @@ def read_command(command):
 
 # Sends a message based on the user_info
 # user_info = (user_name, user_ip)
-def send_message(user_info, message, key):
+def send_message(user_info, my_info, message, key):
 
   ##SENDING PROCESS
   # PACKAGE
@@ -104,13 +103,27 @@ def main():
 # /_/   /____/   /____/     /_/    /_____/   \____/     /_/   \____/   /____/   \____/  
 ##
 
-  filename = input("Enter TauNet filename: ")
-  if filename == '!EXIT':
-    return
-  user_list = u_list(filename)
+  while True:
+    filename = input("Enter TauNet filename: ")
+    if filename == '!EXIT':
+      return
+
+    try:
+      open(filename)
+    except IOError:
+      print(filename + " does not exist.")
+      if input("Would you like to create it? (y/n): ") == 'y':
+        user_list = u_list()
+        user_list.input_u_list(filename)
+#        ##Run the file creation process
+        break #the loop
+    else:
+      user_list = u_list(filename)
+      break
   message_hist = messages.message_list()
   user_info = None
-
+  print(user_list.me)
+  user_list.print_users()
 
   listen_thread = threading.Thread(target=listen, args = (user_list, message_hist,))
   listen_thread.daemon = True
@@ -141,7 +154,7 @@ def main():
         user_info = None
         user_info = user_list.search_users(split_command[0])
       if user_info:
-        send_message(user_info, split_command[1], user_list.key)
+        send_message(user_info, (user_list.me, myip), split_command[1], user_list.key)
       else:
         user_info = old_user
         print("Invalid Command. ? for help\n") ##Invalid user_name

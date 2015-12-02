@@ -2,6 +2,7 @@
 ##
 ## This file impliments the ciphersaber encryption algorythm
 
+import random, time
 
 ## "Produce an RC4 keystream of length" n "with"
 ## r "rounds of key scheduling given key" k
@@ -47,7 +48,10 @@ def decrypt(ivmessage, rounds, key):
 ## 20 rounds of key scheduling is standard
 def encrypt(message, rounds, key):
   length = len(message)
-  iv = [0xba, 0x9a, 0xb4, 0xcf, 0xfb, 0x77, 0x00, 0xe6, 0x18, 0xe3] #10 byte random number
+  #Throw out the large numbs from time and use <1 sec numbers for the seed
+  random.seed(int(float(str(time.time())[:0:-1])))
+  #create 10 byte random number
+  iv = [random.randrange(0,255) for i in range(0,10)]  
   keyiv, keyiv[:len(key)], keyiv[len(key):] = [], map(ord, key), iv
   keystream = rc4(length, rounds, keyiv)
   ciphertext= [0 for i in range(length+10)]
@@ -95,9 +99,7 @@ def main():
     v = v + chr(x[i])
   print("Decrypted Test String 2: ",v, '\n\n')
 
-  print("Test encoding properties: ")
-  print('ord() is equiv to .encode() for encrypt? ', (b == b2))
-  print("Test Encryption == source Encryption: ", m == b)
+ 
 
 if __name__ == "__main__":
   main()
