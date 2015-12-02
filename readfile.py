@@ -87,13 +87,26 @@ class u_list:
           if self.user_list:
             if self.add_user((user, ip)):
               print(user + " has already been added to the user list.")
-            else:
           else:
             self.user_list = user_node(user, ip, self.user_list)
           break
       if not (input("Enter another user? (y/n): ") == 'y'):
         break
-    ##Write file
+    self.write_file(filename)
+    return
+
+  def write_file(self, filename):
+    assert filename
+    f = open(filename, 'w')
+    assert f
+    f.write(self.key + '\n')
+    f.write(self.me + '\n')
+    current = self.user_list
+    while current:
+      if current.user_name and current.ip:
+        f.write(current.user_name + '\n')
+        f.write(current.ip +'\n')
+      current = current.next_node
     return
 
   #Reads in the users from the file
