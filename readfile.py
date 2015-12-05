@@ -1,4 +1,5 @@
-##LLL for the users
+# <<<< user_node >>>> #
+# Linearl linked list for the users
 class user_node:
   def __init__(self, u_name = None, u_ip = None, next_node = None):
     self.next_node =  None
@@ -42,7 +43,10 @@ class user_node:
     if self.next_node:
       return self.next_node.search_ip(u_ip)
     return None
+# <<<< end class user_list >>>> #
 
+# <<<< u_list >>>> #
+# Manages the list of tau_net users
 class u_list:
   #User list must be initialized with a filename.
   def __init__(self, filename = None):
@@ -76,26 +80,27 @@ class u_list:
         break
     while True:
       self.me = input("Input your user name: ")
-      if input("user name = " + self.me + "\nIs this correct? (y/n): ") == 'y':
+      if not valid_user(self.me):
+        print("Error: Invalid user name.\nUsers names may only contain uppercase and lowercase letters a-z, the numbers 0-9, and the - symbol.")
+      elif input("user name = " + self.me + "\nIs this correct? (y/n): ") == 'y':
         break
     print("Creating the list of other users on your TauNetwork:")
-    while True:
+    while input("Enter a tauNet user? (y/n): ") == 'y':
       while True:
         user = input("Input user name: ")
-        ip = input("Input " + user + "'s IP address: ")
+        ip = input("Input " + user + "'s address: ")
         print("Username = " + user + " IP = " + ip)
         if input("Is this correct? (y/n): ") == 'y':
-          if self.user_list:
-            if self.add_user((user, ip)):
-              print(user + " has already been added to the user list.")
-          else:
-            self.user_list = user_node(user, ip, self.user_list)
+          if not valid_user(user):
+            print("Error: Invalid user name.\nUsers names may only contain uppercase and lowercase letters a-z, the numbers 0-9, and the - symbol.")
+          elif self.add_user((user, ip)):
+            print(user + " has already been added to the user list.")
           break
-      if not (input("Enter another user? (y/n): ") == 'y'):
         break
     self.filename = filename
     self.write_file()
     return
+
 
   def write_file(self):
     assert self.filename
@@ -111,6 +116,7 @@ class u_list:
       current = current.next_node
     return
 
+
   #Reads in the users from the file
   def read_file(self, f):
     user_name = f.readline().strip('\n')
@@ -121,6 +127,7 @@ class u_list:
     user_list.next_node = self.read_file(f)
     return user_list
 
+
   #Seach the userlist for a user name and return (user_name, IP)
   #if found or None if not found
   def search_users(self, user_name):
@@ -128,34 +135,78 @@ class u_list:
       return self.user_list.search_user(user_name)
     return None
 
+
   #Search the userlist for an IP address and return (user name, IP)
   #if found or None if not found
   def search_ip(self, user_ip):
     if self.user_list:
       return self.user_list.search_ip(user_ip)
     return None
-  
-  #prints all usernames and their ip addresses
+
+
+  # prints all usernames and their ip addresses
   def print_users(self):
     if self.user_list:
       return self.user_list.print_node()
     return None
 
-  #Adds a user to the list of users
-  #user_info == (user_name, user_ip)
+
+  # Adds a user to the list of users. user_info == (user_name, user_ip)
   def add_user(self, user_info):
-    if not self.search_users(user_info[0]): ## make sure the user name isn't already taken
+    # Make sure the user name isn't taken
+    if not self.user_list:
+            self.user_list = user_node(user_info[0], user_info[1], self.user_list)
+    if not self.search_users(user_info[0]):
       self.user_list = self.user_list.add_node(user_info[0], user_info[1])
       return True
     return False
 
-  #Removes a user from the list of user
+
+  # Removes a user from the list of user
   def remove_user(self, user_name):
     if(self.user_list and self.search_users(user_name)):
       self.user_list = self.user_list.remove_node(user_name)
       return True
     return False
+# <<<< END class u_list >>>> #
 
+
+
+# checks to see if a username is valid. Returns ture or false
+def valid_user(user_name):
+  # Must check for duplicates
+  # Valid Characters a-z, A-Z, 0-9, '-'
+  length = len(user_name)
+  if length > 30 or length < 3:
+    return False
+  for i in range(0, length):
+    if not ((user_name[i] >= 'a' and user_name[i] <= 'z') or (user_name[i] >= 'A' and user_name[i] <= 'Z') or (user_name[i] >= '0' and user_name[i] <= '9') or user_name[i] == '-'):
+      return False
+  return True
+
+
+# Checks for a properly formattd ip address. returns True or False
+def valid_ip(ip):
+  length = len(ip) #length of ip
+  temp_char = ''
+  temp_int = 0 #value of each ip section
+  last = -1 # location of the last '.'
+  total = 0 #total number of sections found
+  for i in range(0, length+1):
+    if i == length or ip[i] == '.':
+      temp_char = int(ip[(last+1):(i)]) #1 after last '.'
+      temp_int = int(temp_char)
+      if temp_int > 255 or temp_int < 0: 
+        return False  #IP not in a valid range
+      total = total + 1
+      last = i
+
+  if total == 4:  #there must be exactly 4 blocks in an ip address
+    return True
+  return False
+
+
+# main for Testing
 def main():
   filename = "users"
   users = u_list(filename)

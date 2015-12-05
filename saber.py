@@ -2,13 +2,16 @@
 ##
 ## This file impliments the ciphersaber encryption algorythm
 
+
 import random, time
+
 
 ## "Produce an RC4 keystream of length" n "with"
 ## r "rounds of key scheduling given key" k
 def rc4(n, rounds, key):
   length = len(key)
   s = [i for i in range(256)]
+
   ## key scheduling.
   j = 0
   for discard_keys in range(rounds):
@@ -44,6 +47,7 @@ def decrypt(ivmessage, rounds, key):
     plaintext[i] = message[i] ^ keystream[i]
   return plaintext
 
+
 ## Ciphersaber-2 encrypt ciphertext
 ## 20 rounds of key scheduling is standard
 def encrypt(message, rounds, key):
@@ -59,6 +63,7 @@ def encrypt(message, rounds, key):
   for i in range(length):
     ciphertext[i+10] = message[i] ^ keystream[i]
   return ciphertext
+
 
 def main():
   a='This is a test of CipherSaber-2.'
@@ -99,7 +104,6 @@ def main():
     v = v + chr(x[i])
   print("Decrypted Test String 2: ",v, '\n\n')
 
- 
-
 if __name__ == "__main__":
+
   main()

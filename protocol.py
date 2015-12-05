@@ -9,74 +9,57 @@
 # <<<< <<<< <<<< READ MESSAGE FUNCTIONS >>>> >>>> >>>> #
 
 #This is the wrapper function for reading messages
-def read_message(message, version):
-  if version == '0.1':
-    return read_message_0_1(message)
-  if version == '0.2':
-    return read_message_0_2(message)
-  return None
-
-#Protocol v0.2
-def read_message_0_2(message):
+def read_message(message):
+  version, message = find_r(message[9:])
+  # Version 0.1 and 0.2 have the same format
+  if version == '0.2' or version == '0.1': 
+    return read_message_0_1(message[8:])
   return None
 
 
-#Protocol v0.1
 def read_message_0_1(message):
-  #sarch for the :, search for the new line
+  #Version has been removed already
+  #message == '\r\nfrom: user_name\r\n...'
+  #             0 12345678
+  sender, message = find_r(message)
+  #message == '\r\nto: user_name\r\n...'
+  #             0 123456
+  reciever, message = find_r(message[6:])
+  #message == '\r\n\r\nmessage'
+  #             0 1 2 34
+  message = message[4:].strip(' \t')
+  return ((sender, ''), (reciever, ''), message, '0.1')
+
+
+# search a message for a \r
+# split messages in to two pieces before \r and after \r
+def find_r(message):
   length = len(message)
-  i = 0 
-  j = 0
-  user_info = (None, None)
-  my_info = (None, None)
-  #  version: 0.1 
-  i = 12
-  j = i
-  while message[j] != '\r' and j <length:
-    j = j +1
-  version = message[i:j]
-
-#  from: their_name
-  i = j + 8 # len('\nfrom: ')
-  j = i
-  while message[j] != '\r' and j <length:
-    j = j +1
-  user_info = (message[i:j], None)
-
-  #  to: my_name
-  i = j + 6
-  j = i
-  while message[j] != '\r' and j <length:
-    j = j +1
-  my_info = (message[i:j], None)
-
-  #  message
-  recieved_message = message[j+4:]
-#  print(user_info, my_info, recieved_message, version)
-  return (user_info, my_info, recieved_message, version)
+  for i in range(length):
+    if message[i] == '\r':
+      return(message[:i], message[i:])
+  # \r not found. The rest of the message is 'before' the \r
+  return(message, '')
 
 
 # <<<< <<<< <<<< WRITE MESSAGE FUNCTIONS >>>> >>>> >>>> #
 
 #This is the wrapper function for writing messages
 def write_message(user_info, my_info, message, version):
-  if version == '0.1':
+  # Version 0.2 and 0.1 have the same format
+  if version == '0.2' or version == '0.1':
     return write_message_0_1(user_info, my_info, message, version)
   return None
 
-  #protocol v0.1
+
 def write_message_0_1(user_info, my_info, message, version):
-  #  version: 0.1
-  #  from: my_name
-  #  to: your_name
-  #
-  #  message
+  #  version: 0.1\r\nfrom: my_name\r\nto: your_name\r\nmessage
   return "version: " + version + "\r\nfrom: " + my_info[0] + "\r\nto: "+ user_info[0] + "\r\n\r\n" + message
 
 
-
+## Main for testing.
 def main():
-  
+  read_message('version: 0.1\r\nfrom: sender\r\nto: reciever\r\n\r\nmessage') 
   print('-----')
   print(ord('\n'))
   print("10" + chr(10)) 
@@ -84,14 +67,7 @@ def main():
   print(ord('\r'))
   print("13" + chr(13))
   print('-----')
-
-
   return
-
-
-
-
-
 
 if __name__ == "__main__":
   main()

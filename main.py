@@ -60,7 +60,7 @@ def listen(user_list, message_hist):
   s = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
   s.bind(('', 6283))
   while 1:
-    s.listen(5)
+    s.listen(1)
     (conn , addr) = s.accept()
     mess = conn.recv(1024).decode() #decode convers from bin to string
                                     #Hangs untill message is recieved
@@ -72,9 +72,11 @@ def listen(user_list, message_hist):
     message = ''
     for i in range(len(dec_mess)):
       message = message + chr(dec_mess[i])
-      
-    rec_mess = protocol.read_message(message, '0.1') #piece out message
-    if(user_list.search_users(rec_mess[0][0])):
+     
+    rec_mess = protocol.read_message(message) #piece out message
+    if rec_mess[2] == '' or rec_mess[2] == '\n': ##Empty message recieved
+      None
+    elif(user_list.search_users(rec_mess[0][0])):
       print('\n' + rec_mess[0][0] + ':\t' + rec_mess[2] + '\n' + input_message, end = '')
       message_hist.add_message(rec_mess[0][0], rec_mess[1][0], rec_mess[2])
     else:
@@ -167,7 +169,10 @@ def main():
       if user_list.remove_user(command[1:]):
         user_list.write_file()
     elif command[0] == '#':
-      lines = int(command[1:])
+      try:
+        lines = int(command[1:])
+      except ValueError:
+        lines = -1
       if lines > 0 and lines < 21:
         message_hist.print_n(lines)
       else:
