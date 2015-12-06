@@ -116,12 +116,13 @@ class u_list:
   #XXX Future update: Encrypt the file with RC4
   def write_file(self):
     assert self.filename
-    f = open(self.filename, 'w')
+    f = open(self.filename, 'w+')
     assert f
     f.write(self.key + '\n')
     f.write(self.me + '\n')
     current = self.user_list
     while current:
+      assert current
       if current.user_name and current.ip:
         f.write(current.user_name + '\n')
         f.write(current.ip +'\n')
