@@ -227,9 +227,9 @@ def main():
     elif command[0] == '+': 
       split_command = read_command(command)
       if (split_command[0] != '' and split_command[1] != '' and 
-          user_func.valid_user(split_command[0])):
-        if user_list.add_user(split_command):
-          user_list.write_file()
+          user_func.valid_user(split_command[0]) and
+          user_list.add_user(split_command)):
+        user_list.write_file()
       else:
         print("Error:\n * Users name may only contain uppercase and lowercase letters from a-z, the numbers from 0-9, and the - symbol.\n * User names must also not have already been added to the list.")
 

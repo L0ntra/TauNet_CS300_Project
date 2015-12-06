@@ -170,7 +170,8 @@ class u_list:
   def add_user(self, user_info):
     # Make sure the user name isn't taken
     if not self.user_list:
-            self.user_list = user_node(user_info[0], user_info[1], self.user_list)
+      self.user_list = user_node(user_info[0], user_info[1], self.user_list)
+      return True
     if not self.search_users(user_info[0]):
       self.user_list = self.user_list.add_node(user_info[0], user_info[1])
       return True
