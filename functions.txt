@@ -1,0 +1,65 @@
+Copyright (c) 2015 Gregory Gaston
+License: https://opensource.org/licenses/MIT
+This file is a compilation of all functions in all files for TauNet
+along with their call values.
+##################################################
+main.py
+  send_message(user_info, my_info, message, key)
+    user_info == (user_name, ip_address)
+    my_info == (my_user_name, my_ip_address)
+
+  listen(user_list, message_hist)
+    user_list == u_list object from user_func.py
+    message_hist == message_list object from messages.py
+
+  read_command(command)
+  at(user_info, message)
+  help_menu()
+  clear()
+##################################################
+##################################################
+messages.py
+  MAX_MESSAGES = 20 #Global Var
+  mess_list.add_message(sender, reciever, message)
+  mess_list.print_n(n)
+
+  message_list.add_message(sender, reciever, message)
+  message_list.remove_tail()
+  message_list.print_n(n)
+##################################################
+##################################################
+user_func.py
+  user_node.add_node(user_name, user_ip)
+  user_node.remove_node(user_name)
+  user_node.print_node()
+  user_node.search_user(user_name)
+  user_node.search_ip(user_ip)
+
+  u_list.input_u_list(filename)
+  u_list.write_file()
+  u_list.read_file(file_object)
+  u_list.search_users(user_name)
+  u_list.search_ip(user_ip)
+  u_list.print_users()
+  u_list.add_user(user_info)
+  u_list.remove_user(user_name)
+
+  valid_user(user_name)
+  valid_ip(any_ip)
+##################################################
+##################################################
+protocol.py
+  read_message(message)
+  read_message_0_1(message, version)
+  find_r(message)
+
+  write_message(user_info, my_info, message, version)
+  write_message_0_1(user_info, my_info, message, version)
+##################################################
+##################################################
+saber.py
+ rc4(keystream_length, rounds, key)
+  decrypt(ivmessage, rounds, key)
+    ivmessage == iv + message
+  encrypt(message, rounds, key)
+##################################################
