@@ -1,3 +1,14 @@
+# Copyright (c) 2015 Gregory Gaston
+# License: https://opensource.org/licenses/MIT
+# This file contains the class and functions used to recored messages
+# recieved by users.
+
+MAX_MESSAGES = 20
+
+
+
+# <<<< <<<< <<<< mess_list class >>>> >>>> >>>> #
+# DLL of messages
 class mess_list:
   def __init__(self, sender = None, reciever = None, message = None, next_node = None):
     self.next_node = next_node
@@ -21,6 +32,9 @@ class mess_list:
             "\nMessage: " + self.message)
     return
 
+
+# <<<< <<<< <<<< message_list class >>>> >>>> >>>> #
+# Manages the mess_list class
 class message_list:
   def __init__(self, sender = None, reciever = None, message = None):
     self.head = None
@@ -37,12 +51,11 @@ class message_list:
     else:
       self.head = self.head.add_message(sender, reciever, message)
       self.total = self.total + 1
-    if self.total > 19:
+    if self.total > MAX_MESSAGES-1:
       assert(self.tail) #if tail is empty something bad happend
       self.remove_tail()
     return None
 
-  # Remove
   def remove_tail(self):
     if not self.tail.prev_node:
       return None
