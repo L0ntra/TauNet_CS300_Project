@@ -213,7 +213,7 @@ def main():
     # Send a message to a user
     elif command[0] == '@':
       user_name, message = read_command(command)
-      if(user_name != '' and old_user):
+      if(user_name != ''):
         old_user = user_info
         user_info = None
         user_info = user_list.search_users(user_name)
