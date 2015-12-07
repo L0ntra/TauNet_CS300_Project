@@ -6,7 +6,7 @@
 # My Libs
 import main, saber, messages, protocol, user_func
 # Built in Libs
-import time
+import time, threading
 
 ## saber.py
 print("<<<< <<<< <<<< Testing Saber.py >>>> >>>> >>>>")
@@ -153,10 +153,24 @@ print("Prompt:        | Input                  | Expected operation\n" +
       "TauNet v0.2>>  | ?                      | Prints help menu\n" +
       "TauNet v0.2>>  | !CLEAR                 | Screen is cleard\n" +
       "TauNet v0.2>>  | !EXIT                  | Program Exits\n")
+
 wait = input("[Enter to Contine]")
 wait = None
 
 print("Test 2:")
+lmtest = True
+try:
+  open("test_file.txt")
+except:
+  lmtest = False
+print("Activate Long Message test == ", lmtest)
+if lmtest:
+  main.main(True)
+print("\nLong Message Test Complete:")
+wait = input("[Enter to Contine]")
+wait = None
+
+print("Test 3:")
 print("Prompt:                | Input         | Expected operation\n" +
       "Enter TauNet filename: | test2         | File does not exist prompt\n" +
       "Would you like to crate it? (y/n) | n  | Return to TauNet filename prompt\n" +
@@ -188,8 +202,10 @@ print("Prompt:                | Input         | Expected operation\n" +
       "Input user name:       | user1         | Input user1's address prompt\n" +
       "Input user1's address  | 127.0.0.1     | correct? prompt\n" +
       "Is this correct? (y/n) | y             | user already added message\n" +
-      "                       |               | Enter a TauNet user prompt\n" +
-      "Enter a TauNet user? (y/n) | y         | Input user name prompt\n" +      
+      "                       |               | Enter a TauNet user prompt\n")
+wait = input("[Enter to Contine]")
+wait = None
+print("Enter a TauNet user? (y/n) | y         | Input user name prompt\n" +      
       "Input user name:       | ua            | Input ua's address prompt\n" +
       "Input ua's address     | 127.0.0.1     | correct? prompt\n" +
       "Is this correct? (y/n) | y             | user name error message\n" +

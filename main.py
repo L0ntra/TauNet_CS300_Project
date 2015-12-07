@@ -16,8 +16,10 @@ myip = socket.gethostbyname(socket.gethostname())
 my_user_name = ''
 TauNet_version = '1.0'
 protocol_version = '0.2'
-input_message = "TauNet v" + TauNet_version + ">> " #Global variable
+filename = ''
+input_message = '' #Global variable
 TIMEOUT = 8
+MAX_MESSAGE_LENGTH = 600
 key = ''
 
 
@@ -70,7 +72,8 @@ def listen(user_list, message_hist):
       message = message + chr(dec_mess[i])
      
     rec_mess = protocol.read_message(message) #piece out message
-    if rec_mess[2] == '' or rec_mess[2] == '\n': ##Empty message recieved
+    assert rec_mess
+    if not rec_mess or rec_mess[2] == '' or rec_mess[2] == '\n': ##Empty message recieved
       None
     elif(user_list.search_users(rec_mess[0][0])):
       print('\n' + rec_mess[0][0] + ':\t' + rec_mess[2] + '\n' + input_message, end = '')
@@ -103,9 +106,9 @@ def read_command(command):
 def at(user_info, message):
   message_end = None
   while message:
-    if len(message) > 600:
-      message_end = message[600:]
-      message = message[:600]
+    if len(message) > MAX_MESSAGE_LENGTH:
+      message_end = message[MAX_MESSAGE_LENGTH:]
+      message = message[:MAX_MESSAGE_LENGTH]
     else:
       message_end = None
         
@@ -156,7 +159,34 @@ def clear():
 
 # <<<< <<<< <<<< MAIN >>>> >>>> >>>> #
 # The main execution branch for TauNet.
-def main():
+def main(LMT= False):
+  # Declair Globals that will be set
+  global my_user_name, key, filename, input_message
+
+
+  # LONG MESSAGE TESTING:
+  if LMT:
+    assert open("test_file.txt")
+    user_list = user_func.u_list("test_file.txt")
+    message_hist = messages.message_list()
+    my_user_name = user_list.me
+    key = user_list.key
+    user_info = old_user = None
+    listen_thread = threading.Thread(target=listen, args = (user_list, message_hist,))
+    listen_thread.daemon = True
+    listen_thread.start()
+    message = ''
+    l = int(input("Message Max Length == " + str(MAX_MESSAGE_LENGTH) +"\nLength of string to send: "))
+    n = int(input("Number of times to send full message: "))
+    for i in range(l):
+      message = message + str(i%10)
+    for i in range(n):
+      at(('user1', '127.0.0.1'), message)
+    return None
+  # END LONG MESSAGE TESTING
+  
+  
+# Main proper  
   print("                     _   __     __              ___ ____   \n" +
         "   _____ ___  __  __/ | / /__  / /_    _   __  <  // __ \  \n" +
         "  /  __/ __ `/ / / /  |/ / _ \/ __/   | | / /  / // / / /  \n" +
@@ -164,11 +194,9 @@ def main():
         "  \__/\__,_/\__,_/_/ |_/\___/\__/     |___/  /_(_)____/    \n" +
         "\n")
 ##     ASCII TEXT ART FROM: http://patorjk.com/software/taag/#p=display&f=Slant
-
-
   # Select file to open
   while True:
-    filename = input("Enter TauNet filename: ")
+    filename = input("Enter TauNet filename, type 'new' to create new TauNet, or type '!EXIT' to exit.\n: >> ")
     if filename == '!EXIT':
       return None
     elif filename == 'new':
@@ -187,24 +215,19 @@ def main():
         user_list = user_func.u_list(filename)
         break
 
-  # Local variables
+  # Set up local variables
   message_hist = messages.message_list()
-  global my_user_name, key
+  user_info = old_user = None
+  # Set up global variable
   my_user_name = user_list.me
   key = user_list.key
-  user_info = old_user = None
+  filename = user_list.filename
+  input_message = "TauNet (" + filename + ") v" + TauNet_version + ">> "
 
   # Start Listening for incoming messages
   listen_thread = threading.Thread(target=listen, args = (user_list, message_hist,))
   listen_thread.daemon = True
   listen_thread.start()
-
-  # Long message test:
-  #  message = ''
-  #  for i in range(1000):
-  #    message = message + str(i%10)
-  #  for i in range(20):
-  #    at(('user1', '127.0.0.1'), message)
 
   # Menu loop
   while True:
@@ -274,7 +297,7 @@ def main():
     #Invalid command
     else:
       print("Error:\n * Invalid Command. ? for help.")
-
+  return None
 
 if __name__ == "__main__":
   clear()
