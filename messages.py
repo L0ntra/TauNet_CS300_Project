@@ -24,12 +24,14 @@ class mess_list:
     
 
   def print_n(self, n):
-    n = n-1
-    if n > 0 and self.next_node:
-      self.next_node.print_n(n)
-    if self.sender and self.reciever and self.message:
-      print("\nSender: " + self.sender + "\t Reciever: " + self.reciever +
-            "\nMessage: " + self.message)
+    try:
+      n = n-1
+      if n > 0 and self.next_node:
+        self.next_node.print_n(n)
+      if self.sender and self.reciever and self.message:
+        print("\nSender: " + self.sender + "\t Reciever: " + self.reciever +
+              "\nMessage: " + self.message)
+    except: None
     return
 
 
@@ -68,8 +70,12 @@ class message_list:
     return None
 
   def print_n(self, n):
-    if self.head:
-      self.head.print_n(n)
+    try:
+      if n < 1:
+        return None
+      if self.head:
+        self.head.print_n(n)
+    except: None
     return None
 
 def main():

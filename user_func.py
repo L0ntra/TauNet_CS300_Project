@@ -59,10 +59,17 @@ class user_node:
 # Manages the list of TauNet users
 class u_list:
   def __init__(self, filename = None):
-    if filename:
+    exists = True
+    try:
+      open(filename)
+    except:
+      exists = False
+    if filename and exists:
       f = open(filename)
       self.key = f.readline().strip('\n') # Read in Key
       self.me = f.readline().strip('\n')  # Read in my user name
+      if self.key == '' or self.me == '':
+        sefl.key = self.me = None
       self.user_list = self.read_file(f)
       f.close()
     else:

@@ -239,6 +239,7 @@ def main():
         print("Error:\n * Invalid Command. ? for help.")
       elif user_list.remove_user(command[1:]):
         user_list.write_file()
+        user_info = None
 
     # Display the last n messages
     # or the last message
