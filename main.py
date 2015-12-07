@@ -14,8 +14,9 @@ import protocol, saber, messages, user_func
 port = 6283
 myip = socket.gethostbyname(socket.gethostname())
 my_user_name = ''
+TauNet_version = '1.0'
 protocol_version = '0.2'
-input_message = "TauNet v" + protocol_version + ">> " #Global variable
+input_message = "TauNet v" + TauNet_version + ">> " #Global variable
 TIMEOUT = 8
 key = ''
 
@@ -156,13 +157,14 @@ def clear():
 # <<<< <<<< <<<< MAIN >>>> >>>> >>>> #
 # The main execution branch for TauNet.
 def main():
-  print("                     _   __     __               ____   ___  \n" +
-        "   _____ ___  __  __/ | / /__  / /_    _   __   / __ \ |__ \ \n" +
-        "  /  __/ __ `/ / / /  |/ / _ \/ __/   | | / /  / / / / __/ / \n" +
-        "  / /_/ /_/ / /_/ / /|  /  __/ /_     | |/ /  / /_/ / / __/  \n" +
-        "  \__/\__,_/\__,_/_/ |_/\___/\__/     |___/   \____(_)____/  \n" +
+  print("                     _   __     __              ___ ____   \n" +
+        "   _____ ___  __  __/ | / /__  / /_    _   __  <  // __ \  \n" +
+        "  /  __/ __ `/ / / /  |/ / _ \/ __/   | | / /  / // / / /  \n" +
+        "  / /_/ /_/ / /_/ / /|  /  __/ /_     | |/ /  / // /_/ /   \n" +
+        "  \__/\__,_/\__,_/_/ |_/\___/\__/     |___/  /_(_)____/    \n" +
         "\n")
 ##     ASCII TEXT ART FROM: http://patorjk.com/software/taag/#p=display&f=Slant
+
 
   # Select file to open
   while True:
