@@ -1,5 +1,5 @@
 # TauNet v1.0
-----------------
+
 Copyright (C) 2015 Gregory Gaston
 
 TauNet is a secure messaging system developed for operaton on Raspberry Pi Devices running the Raspbian Operating System.
