@@ -77,14 +77,3 @@ class message_list:
         self.head.print_n(n)
     except: None
     return None
-
-def main():
-  messages = message_list()
-  for i in range (30, 0 , -1):
-    messages.add_message("User", "Me", str(i))
-  messages.print_n(25) #will only print 20 messages because there will
-  print('\n\n')        #only ever be 20 messages in the list at maximum
-  return
-
-if __name__ == "__main__":
-  main()

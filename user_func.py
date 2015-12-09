@@ -226,20 +226,3 @@ def valid_ip(ip):
   if total == 4:  #there must be exactly 4 blocks in an ip address
     return True
   return False
-
-
-# main for Testing
-def main():
-  filename = "users"
-  users = u_list(filename)
-  print(users.key)
-  print(users.me)
-
-  print('\n\n')
-  print(users.search_users('user3'))
-  print(users.search_ip('127.0.0.1'))
-  users.print_users()
-#  print('\n\n')
-
-if __name__ == "__main__":
-  main()
