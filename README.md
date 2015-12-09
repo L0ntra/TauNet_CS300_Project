@@ -4,9 +4,9 @@ Copyright (C) 2015 Gregory Gaston
 
 TauNet is a secure messaging system developed for operaton on Raspberry Pi Devices running the Raspbian Operating System.
 
-*** While this program will run on other devices and operating systems, this progam has only been tested on Raspberry Pi Devices running Raspbian Operating System.
+ * While this program will run on other devices and operating systems, this progam has only been tested on Raspberry Pi Devices running Raspbian Operating System.
 
-*** As with any encryption methods it is possible that messages sent using TauNet could be intercepted and decrypted by outside sources. This program uses arcfour encryption, which is speculated to have been broken by some State Encryption Agencies [(wikipedia)](https://en.wikipedia.org/wiki/RC4).
+ * As with any encryption methods it is possible that messages sent using TauNet could be intercepted and decrypted by outside sources. This program uses arcfour encryption, which is speculated to have been broken by some State Encryption Agencies [(wikipedia)](https://en.wikipedia.org/wiki/RC4).
 
 
 ### Setup
