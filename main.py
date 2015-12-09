@@ -232,7 +232,7 @@ def main(LMT= False):
   # Menu loop
   while True:
     split_command = None
-    command = input(input_message)
+    command = input('\n' + input_message)
     if command == '':
       None# Do nothing
     # Send a message to a user
