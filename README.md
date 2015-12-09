@@ -1,5 +1,5 @@
 # TauNet v1.0
-==============================
+----------------
 Copyright (C) 2015 Gregory Gaston
 
 TauNet is a secure messaging system developed for operaton on Raspberry Pi Devices running the Raspbian Operating System.
@@ -10,7 +10,7 @@ TauNet is a secure messaging system developed for operaton on Raspberry Pi Devic
 
 
 ### Setup
-==============================
+----------------
  * An ecnryption key that will be used by all users on TauNet neededs to be chosen. It can be any ASCII string of 1 more more characters, but a key of at least 10 characters is recommended.
  * Each user on the network will need to choose a unique user name, that they shall provide to other users along with their IP address
  * The encryption key and user information will be shared amongst all TauNet users before running TauNet for the first time.
@@ -20,7 +20,7 @@ TauNet is a secure messaging system developed for operaton on Raspberry Pi Devic
  * Once the Network setup is complete type '?' to get a list of available commands
 
 ### Future Updates
-==============================
+----------------
  * Store and Display sent messages
  * Display messages to/from a particular user
  * Detailed user information
