@@ -1,0 +1,11 @@
+Gregory Gaston
+97 A
+
+Really nice documents and clean source. The SDD and STP were
+quite complete. Good Git history. Good clean job overall.
+
+Most folks were using DynDNS to cope with variable network
+IPs. Is there some reason that solution wouldn't have worked
+for you? I would have liked to see an echo test.
+
+Good job.
